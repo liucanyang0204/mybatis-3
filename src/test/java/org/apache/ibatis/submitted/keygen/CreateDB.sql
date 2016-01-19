@@ -1,5 +1,5 @@
 --
---    Copyright 2009-2012 the original author or authors.
+--    Copyright 2009-2016 the original author or authors.
 --
 --    Licensed under the Apache License, Version 2.0 (the "License");
 --    you may not use this file except in compliance with the License.
@@ -14,19 +14,10 @@
 --    limitations under the License.
 --
 
-drop table users if exists;
-drop table product if exists;
+DROP TABLE country IF EXISTS;
 
-create table users (
-  id int,
-  name varchar(20),
-  city varchar(20),
-  state char(20)
+CREATE TABLE country (
+  Id int IDENTITY,
+  countryname varchar(255) DEFAULT NULL,
+  countrycode varchar(255) DEFAULT NULL,
 );
-
-create table product (
-  id int identity,
-  name varchar(20)
-);
-
-insert into users (id, name, city, state) values(1, '   User1', '  Carmel  ', '  IN ');

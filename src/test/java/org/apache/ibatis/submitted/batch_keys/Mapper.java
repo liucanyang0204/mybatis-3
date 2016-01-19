@@ -13,35 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.apache.ibatis.submitted.nestedresulthandler;
+package org.apache.ibatis.submitted.batch_keys;
 
-public class Item {
-  private Integer id;
-  private String name;
+public interface Mapper {
+  
+  void insert(User user);
+  void insertIdentity(User user);
 
-  public String toString(){
-    return new StringBuilder()
-            .append("Item(")
-            .append(id)
-            .append(", ")
-            .append(name)
-            .append(" )")
-            .toString();
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
 }

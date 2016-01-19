@@ -1,5 +1,5 @@
 --
---    Copyright 2009-2012 the original author or authors.
+--    Copyright 2009-2015 the original author or authors.
 --
 --    Licensed under the Apache License, Version 2.0 (the "License");
 --    you may not use this file except in compliance with the License.
@@ -14,19 +14,12 @@
 --    limitations under the License.
 --
 
-drop table users if exists;
-drop table product if exists;
-
-create table users (
+create table person (
   id int,
-  name varchar(20),
-  city varchar(20),
-  state char(20)
+  firstName varchar(100),
+  lastName varchar(100),
+  personType int -- important: Enum original number (starting from 0)
 );
 
-create table product (
-  id int identity,
-  name varchar(20)
-);
-
-insert into users (id, name, city, state) values(1, '   User1', '  Carmel  ', '  IN ');
+INSERT INTO person (id, firstName, lastName, personType) VALUES (1, 'John', 'Smith', 0);
+INSERT INTO person (id, firstName, lastName, personType) VALUES (2, 'Mike', 'Jordan', 1);

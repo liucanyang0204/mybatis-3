@@ -13,29 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.apache.ibatis.submitted.nestedresulthandler;
+package org.apache.ibatis.submitted.call_setters_on_nulls_again;
 
-public class Item {
-  private Integer id;
+public class ParentBean {
+
   private String name;
-
-  public String toString(){
-    return new StringBuilder()
-            .append("Item(")
-            .append(id)
-            .append(", ")
-            .append(name)
-            .append(" )")
-            .toString();
-  }
-
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;
@@ -44,4 +26,20 @@ public class Item {
   public void setName(String name) {
     this.name = name;
   }
+
+  public ChildBean getClient() {
+    return client;
+  }
+
+  public void setClient(ChildBean client) {
+    this.client = client;
+  }
+
+  private ChildBean client;
+
+  @Override
+  public String toString() {
+    return "ParentBean [name=" + name + ", client=" + client + "]";
+  }
+
 }

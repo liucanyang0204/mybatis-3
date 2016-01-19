@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-
        Copyright 2009-2012 the original author or authors.
 
        Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,31 +13,16 @@
        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
        See the License for the specific language governing permissions and
        limitations under the License.
-
 -->
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper namespace="org.apache.ibatis.submitted.batch_keys.Mapper">
-
-  <insert id="insert">
-    <selectKey keyProperty="id" resultType="int" order="AFTER">
-    select top 1 50 from INFORMATION_SCHEMA.SYSTEM_TABLES
-    </selectKey>
-  	insert into users values(#{id}, #{name})
+<mapper namespace="org.apache.ibatis.submitted.keygen.CountryMapper" >
+  <insert id="insertList" parameterType="org.apache.ibatis.submitted.keygen.Country" useGeneratedKeys="true" keyProperty="id">
+      insert into country (countryname,countrycode)
+      values
+      <foreach collection="list" separator="," item="country">
+          (#{country.countryname},#{country.countrycode})
+      </foreach>
   </insert>
-
-  <select id="select" resultType="org.apache.ibatis.submitted.batch_keys.User" >
-  	select id, name from users
-  </select>
-
-  <insert id="insertIdentity" keyProperty="id" useGeneratedKeys="true">
-  	insert into users2 (name) values(#{name})
-  </insert>
-
-  <select id="selectIdentity" resultType="org.apache.ibatis.submitted.batch_keys.User" >
-  	select id, name from users2
-  </select>
-
 </mapper>

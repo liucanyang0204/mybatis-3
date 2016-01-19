@@ -13,39 +13,41 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.apache.ibatis.submitted.typehandler;
+package org.apache.ibatis.submitted.keygen;
 
 import static org.junit.Assert.*;
 
 import java.io.Reader;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class TypeHandlerTest {
+/**
+ * @author liuzh
+ */
+public class Jdbc3KeyGeneratorTest {
 
   private static SqlSessionFactory sqlSessionFactory;
 
   @BeforeClass
   public static void setUp() throws Exception {
-    // create a SqlSessionFactory
-    Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/typehandler/mybatis-config.xml");
+    // create an SqlSessionFactory
+    Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/keygen/MapperConfig.xml");
     sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
     reader.close();
-    sqlSessionFactory.getConfiguration().getTypeHandlerRegistry().register(StringTrimmingTypeHandler.class);
-    sqlSessionFactory.getConfiguration().addMapper(Mapper.class);
 
     // populate in-memory database
     SqlSession session = sqlSessionFactory.openSession();
     Connection conn = session.getConnection();
-    reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/typehandler/CreateDB.sql");
+    reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/keygen/CreateDB.sql");
     ScriptRunner runner = new ScriptRunner(conn);
     runner.setLogWriter(null);
     runner.runScript(reader);
@@ -54,30 +56,20 @@ public class TypeHandlerTest {
   }
 
   @Test
-  public void shouldGetAUser() {
+  public void shouldInsertListAndRetrieveId() throws Exception {
     SqlSession sqlSession = sqlSessionFactory.openSession();
     try {
-      Mapper mapper = sqlSession.getMapper(Mapper.class);
-      User user = mapper.getUser(1);
-      Assert.assertEquals("User1", user.getName());
-      Assert.assertEquals("Carmel", user.getCity());
-      Assert.assertEquals("IN", user.getState());
+      CountryMapper mapper = sqlSession.getMapper(CountryMapper.class);
+      List<Country> countries = new ArrayList<Country>();
+      countries.add(new Country("China", "CN"));
+      countries.add(new Country("United Kiongdom", "GB"));
+      countries.add(new Country("United States of America", "US"));
+      mapper.insertList(countries);
+      for (Country country : countries) {
+        assertNotNull(country.getId());
+      }
     } finally {
-      sqlSession.close();
-    }
-  }
-
-  @Test
-  public void shouldApplyTypeHandlerOnGeneratedKey() {
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    try {
-      Mapper mapper = sqlSession.getMapper(Mapper.class);
-      Product product = new Product();
-      product.setName("new product");
-      mapper.insertProduct(product);
-      assertNotNull(product.getId());
-      assertNotNull(product.getId().getValue());
-    } finally {
+      sqlSession.rollback();
       sqlSession.close();
     }
   }

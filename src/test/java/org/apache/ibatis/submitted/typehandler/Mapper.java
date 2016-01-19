@@ -15,6 +15,8 @@
  */
 package org.apache.ibatis.submitted.typehandler;
 
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
@@ -30,4 +32,10 @@ public interface Mapper {
     @Result(column="state", property="state", jdbcType=JdbcType.VARCHAR)
   })
   User getUser(Integer id);
+
+  @Insert({
+    "insert into product (name) values (#{name})"
+  })
+  @Options(useGeneratedKeys = true, keyProperty = "id")
+  int insertProduct(Product product);
 }

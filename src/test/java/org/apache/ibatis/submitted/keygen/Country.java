@@ -13,20 +13,28 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.apache.ibatis.submitted.nestedresulthandler;
+package org.apache.ibatis.submitted.keygen;
 
-public class Item {
+/**
+ * @author liuzh
+ */
+public class Country {
   private Integer id;
-  private String name;
+  private String countryname;
+  private String countrycode;
 
-  public String toString(){
-    return new StringBuilder()
-            .append("Item(")
-            .append(id)
-            .append(", ")
-            .append(name)
-            .append(" )")
-            .toString();
+  public Country() {
+  }
+
+  public Country(String countryname, String countrycode) {
+    this.countryname = countryname;
+    this.countrycode = countrycode;
+  }
+
+  public Country(Integer id, String countryname, String countrycode) {
+    this.id = id;
+    this.countryname = countryname;
+    this.countrycode = countrycode;
   }
 
   public Integer getId() {
@@ -37,11 +45,19 @@ public class Item {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getCountryname() {
+    return countryname;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setCountryname(String countryname) {
+    this.countryname = countryname;
+  }
+
+  public String getCountrycode() {
+    return countrycode;
+  }
+
+  public void setCountrycode(String countrycode) {
+    this.countrycode = countrycode;
   }
 }
